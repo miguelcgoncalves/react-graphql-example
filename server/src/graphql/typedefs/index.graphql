@@ -1,0 +1,10 @@
+type Query {
+  post(id: ID!): Post
+  posts(offset: Int, limit: Int): PostsResult
+}
+
+type Mutation {
+  createPost(input: PostInput!): Post
+  updatePost(id: ID!, input: PostInput!): Post
+  deletePost(id: ID!): Void
+}

@@ -1,0 +1,28 @@
+services:
+  client:
+    depends_on:
+      - server
+    image: node:18
+    user: node
+    ports:
+      - ${CLIENT_PORT}:5173
+    volumes:
+      - ./client:/app
+    working_dir: /app
+    command: sh -c 'yarn && yarn dev --host'
+    environment:
+      - VITE_API_URL=http://localhost:${SERVER_PORT}
+      - PORT=5173
+
+  server:
+    image: node:18
+    user: node
+    volumes:
+      - ./server:/app
+    working_dir: /app
+    command: sh -c 'yarn && npx prisma migrate dev && yarn dev'
+    ports:
+      - ${SERVER_PORT}:3000
+    environment:
+      - PORT=3000
+      - DATABASE_URL=file:/tmp/dev.db
